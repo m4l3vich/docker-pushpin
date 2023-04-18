@@ -7,10 +7,21 @@
 # Pull the base image
 FROM debian:stable-slim
 
+# Add the "testing" repository
+RUN \
+  echo 'deb http://deb.debian.org/debian testing main' > /etc/apt/sources.list.d/testing.list && \
+  echo 'Package: * \n\
+Pin: release a=stable \n\
+Pin-Priority: 700 \n\
+\n\
+Package: * \n\
+Pin: release a=testing \n\
+Pin-Priority: 650' > /etc/apt/preferences.d/pin
+
 # Install Pushpin
 RUN \
   apt-get update && \
-  apt-get install -y pushpin
+  apt-get install -t testing -y pushpin
 
 # Cleanup
 RUN \
