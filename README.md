@@ -3,20 +3,29 @@
 
 This repository contains **Dockerfile** of [Pushpin](http://pushpin.org/) for [Docker](https://www.docker.com/) published to the public [Docker Hub Registry](https://hub.docker.com/).
 
+**This is an unofficial Docker image**, changes from the official one include:
+- Image is based on Debian Stable (slim version), not on Ubuntu 22.04
+- There is also an ARM64 version of the image, not only AMD64 (*the reason I made this image in the first place*)
+- Pushpin is installed from Debian's `testing` repository, not from the Pushpin developers' repository (fanout.jfrog.io)
+- The version of Pushpin to be installed is determined by the current version in Debian's `testing` repository ([check the current version of the package here](https://packages.debian.org/testing/pushpin))
+- To pull the image, obviously, you use `m4l3vich/pushpin` tag, and not `fanout/pushpin`
+
+Everything else is basically the same.
+
 ## Base Docker Image
 
-* [ubuntu:18.04](https://hub.docker.com/_/ubuntu/)
+* [debian:stable-slim](https://hub.docker.com/_/debian/)
 
 ## Installation
 
 1. Install [Docker](https://www.docker.com/).
 
-2. Download [automated build](https://hub.docker.com/r/fanout/pushpin/) from public [Docker Hub Registry](https://hub.docker.com/): `docker pull fanout/pushpin`
+2. Download [automated build](https://hub.docker.com/r/m4l3vich/pushpin/) from public [Docker Hub Registry](https://hub.docker.com/): `docker pull m4l3vich/pushpin`
 
 Alternatively, you can build an image from the `Dockerfile`:
 
 ```sh
-docker build -t fanout/pushpin .
+docker build -t m4l3vich/pushpin .
 ```
 
 ## Usage
@@ -28,7 +37,7 @@ docker run \
   -p 5560-5563:5560-5563 \
   --rm \
   --name pushpin \
-  fanout/pushpin
+  m4l3vich/pushpin
 ```
 
 By default, Pushpin routes traffic to a test handler.  See the [Getting Started Guide](https://pushpin.org/docs/getting-started/) for more information.
