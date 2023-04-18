@@ -5,24 +5,12 @@
 #
 
 # Pull the base image
-FROM ubuntu:22.04
-MAINTAINER Justin Karneges <justin@fanout.io>
-
-# Add private APT repository
-RUN \
-  apt-get update && \
-  apt-get install -y apt-transport-https software-properties-common && \
-  echo deb https://fanout.jfrog.io/artifactory/debian fanout-jammy main \
-    | tee /etc/apt/sources.list.d/fanout.list && \
-  apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys \
-    EA01C1E777F95324
-
-ENV PUSHPIN_VERSION 1.36.0-1~jammy
+FROM debian:stable-slim
 
 # Install Pushpin
 RUN \
   apt-get update && \
-  apt-get install -y pushpin=$PUSHPIN_VERSION
+  apt-get install -y pushpin
 
 # Cleanup
 RUN \
@@ -32,6 +20,7 @@ RUN \
 
 # Add entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Define default entrypoint and command
 ENTRYPOINT ["docker-entrypoint.sh"]
